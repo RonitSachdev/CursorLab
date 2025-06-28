@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CursorLab - Modular API Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #000000, #333333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            margin-bottom: 50px;
+            color: #666666;
+            font-weight: 300;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .controls-panel {
+            background: #000000;
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .controls-panel h2 {
+            font-size: 1.8em;
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .control-group {
+            margin-bottom: 35px;
+        }
+
+        .control-label {
+            display: block;
+            font-size: 0.95em;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #cccccc;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .slider-container {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #333333;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .slider-value {
+            display: inline-block;
+            background: #222222;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 500;
+            margin-top: 8px;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .color-option {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            border-color: #ffffff;
+        }
+
+        .color-option.active {
+            border-color: #ffffff;
+            box-shadow: 0 0 0 2px #000000;
+        }
+
+        .section {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .section h2 {
+            color: #000000;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        .section h3 {
+            color: #333333;
+            margin-bottom: 20px;
+            margin-top: 30px;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .demo-button {
+            background: #000000;
+            border: none;
+            color: white;
+            padding: 18px 25px;
+            font-size: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        
+        .demo-button:hover {
+            background: #333333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .demo-button:active {
+            transform: translateY(0);
+        }
+        
+        .trail-button {
+            background: linear-gradient(135deg, #000000, #333333);
+        }
+        
+        .cursor-button {
+            background: linear-gradient(135deg, #666666, #000000);
+        }
+        
+        .chain-button {
+            background: linear-gradient(135deg, #333333, #000000);
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 14px;
+            color: #333333;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+        
+        .note {
+            background: #f8f9fa;
+            border-left: 4px solid #000000;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            color: #333333;
+        }
+        
+        .warning {
+            background: #fff5f5;
+            border-left: 4px solid #ff0000;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            color: #333333;
+        }
+        
+        .settings-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            font-size: 0.9em;
+            color: #cccccc;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: #222222;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls-panel {
+                position: relative;
+                top: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CursorLab</h1>
+        <p class="subtitle">Modern cursor enhancement library with interactive trail effects</p>
+
+        <div class="main-grid">
+            <div class="content-area">
+                <div class="section">
+                    <h2>Trail Types</h2>
+                    <p>Choose different trail shapes that follow your cursor:</p>
+                    <div class="button-grid">
+                        <button class="demo-button trail-button" onclick="setTrail('circle')">Circle Trail</button>
+                        <button class="demo-button trail-button" onclick="setTrail('circle-filled')">Filled Circle</button>
+                        <button class="demo-button trail-button" onclick="setTrail('square')">Square Trail</button>
+                        <button class="demo-button trail-button" onclick="setTrail('square-filled')">Filled Square</button>
+                        <button class="demo-button trail-button" onclick="setTrail('triangle')">Triangle Trail</button>
+                        <button class="demo-button trail-button" onclick="setTrail('star')">Star Trail</button>
+                        <button class="demo-button trail-button" onclick="setTrail('dot')">Dot Trail</button>
+                    </div>
+                    <div class="code-block">CursorLab.setCursorTrail('circle').startTrail();</div>
+                </div>
+
+                <div class="section">
+                    <h2>Custom Cursors</h2>
+                    <p>Change the actual cursor appearance:</p>
+                    <div class="button-grid">
+                        <button class="demo-button cursor-button" onclick="setCursor('crosshair', 2, 15)">Crosshair</button>
+                        <button class="demo-button cursor-button" onclick="setCursor('grab')">Grab</button>
+                        <button class="demo-button cursor-button" onclick="setCursor('copy')">Copy</button>
+                        <button class="demo-button cursor-button" onclick="setCursor('none')">Hidden</button>
+                        <button class="demo-button cursor-button" onclick="setCursor('url(https://cur.cursors-4u.net/nature/nat-12/nat1137.cur), auto')">Custom Image</button>
+                    </div>
+                    <div class="code-block">CursorLab.setCustomCursor('crosshair', 2, 15); // thickness, length<br>CursorLab.setCustomCursor('grab');<br>CursorLab.setCustomCursor('url(path/to/cursor.png), auto');</div>
+                </div>
+
+                <div class="section">
+                    <h2>Method Chaining Examples</h2>
+                    <p>Combine multiple effects with method chaining:</p>
+                    <div class="button-grid">
+                        <button class="demo-button chain-button" onclick="chainExample1()">Red Circle + Grab</button>
+                        <button class="demo-button chain-button" onclick="chainExample2()">Blue Star + Fast</button>
+                        <button class="demo-button chain-button" onclick="chainExample3()">Purple Square + Thick</button>
+                        <button class="demo-button chain-button" onclick="chainExample4()">Custom Complete</button>
+                    </div>
+                    <div class="code-block">
+// Example 1: Red circle with grab cursor<br>
+CursorLab.setCursorTrail('circle')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setColor('#ff0000')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setSize(15)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setThickness(3)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setCustomCursor('grab')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.startTrail();<br><br>
+// Example 2: Fast blue star<br>
+CursorLab.setCursorTrail('star')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setColor('#0066ff')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.trailDelay(0.05)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.setSize(25)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.startTrail();
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Advanced Styling</h2>
+                    <p>Use setCustomStyle for advanced CSS control:</p>
+                    <div class="button-grid">
+                        <button class="demo-button" onclick="customStyle1()">Blur Effect</button>
+                        <button class="demo-button" onclick="customStyle2()">Rainbow Glow</button>
+                        <button class="demo-button" onclick="customStyle3()">Rotate Animation</button>
+                    </div>
+                    <div class="code-block">
+// Custom CSS styling<br>
+CursorLab.setCustomStyle({<br>
+&nbsp;&nbsp;cursor: 'none',<br>
+&nbsp;&nbsp;'pointer-events': 'auto'<br>
+});<br><br>
+// Or with CSS string<br>
+CursorLab.setCustomStyle('* { cursor: crosshair !important; }');
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>Control Panel</h2>
+                    <div class="button-grid">
+                        <button class="demo-button" onclick="CursorLab.setDefault()">Reset Trail</button>
+                        <button class="demo-button" onclick="CursorLab.setNormalCursor()">Normal Cursor</button>
+                        <button class="demo-button" onclick="CursorLab.destroy()">Destroy All</button>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <strong>How It Works:</strong><br>
+                    1. Use <code>setCursorTrail(type)</code> to choose trail shape<br>
+                    2. Customize with <code>setColor()</code>, <code>setSize()</code>, <code>setThickness()</code>, <code>trailDelay()</code><br>
+                    3. Set cursor with <code>setCustomCursor()</code><br>
+                    4. Apply custom styles with <code>setCustomStyle()</code><br>
+                    5. Start the trail with <code>startTrail()</code><br>
+                    6. Chain methods together for powerful combinations!
+                </div>
+
+                <div class="warning">
+                    <strong>Note:</strong> Image cursors may not work on all browsers due to CORS policies. Use local images or data URLs for best results.
+                </div>
+
+                <div class="section">
+                    <h2>CLI Help</h2>
+                    <p>After installing CursorLab, you can access help directly from the command line:</p>
+                    <div class="code-block">
+npm install cursorlab<br>
+cursorlab help     # Show detailed documentation<br>
+cursorlab version  # Show version info
+                    </div>
+                    <p>The CLI provides comprehensive examples and usage patterns for all methods!</p>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <h2>Live Controls</h2>
+                
+                <div class="control-group">
+                    <label class="control-label">Size</label>
+                    <div class="slider-container">
+                        <input type="range" id="sizeSlider" class="slider" min="5" max="50" value="15" oninput="updateSize(this.value)">
+                        <div class="slider-value" id="sizeValue">15px</div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Trail Delay</label>
+                    <div class="slider-container">
+                        <input type="range" id="delaySlider" class="slider" min="0.01" max="0.5" step="0.01" value="0.1" oninput="updateDelay(this.value)">
+                        <div class="slider-value" id="delayValue">0.1</div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Thickness</label>
+                    <div class="slider-container">
+                        <input type="range" id="thicknessSlider" class="slider" min="1" max="8" value="2" oninput="updateThickness(this.value)">
+                        <div class="slider-value" id="thicknessValue">2px</div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Color Palette</label>
+                    <div class="color-palette">
+                        <div class="color-option active" style="background: #1abc9c" data-color="#1abc9c" onclick="selectColor('#1abc9c', this)"></div>
+                        <div class="color-option" style="background: #e74c3c" data-color="#e74c3c" onclick="selectColor('#e74c3c', this)"></div>
+                        <div class="color-option" style="background: #3498db" data-color="#3498db" onclick="selectColor('#3498db', this)"></div>
+                        <div class="color-option" style="background: #9b59b6" data-color="#9b59b6" onclick="selectColor('#9b59b6', this)"></div>
+                        <div class="color-option" style="background: #f39c12" data-color="#f39c12" onclick="selectColor('#f39c12', this)"></div>
+                        <div class="color-option" style="background: #2ecc71" data-color="#2ecc71" onclick="selectColor('#2ecc71', this)"></div>
+                        <div class="color-option" style="background: #e67e22" data-color="#e67e22" onclick="selectColor('#e67e22', this)"></div>
+                        <div class="color-option" style="background: #f1c40f" data-color="#f1c40f" onclick="selectColor('#f1c40f', this)"></div>
+                        <div class="color-option" style="background: #34495e" data-color="#34495e" onclick="selectColor('#34495e', this)"></div>
+                        <div class="color-option" style="background: #ff00ff" data-color="#ff00ff" onclick="selectColor('#ff00ff', this)"></div>
+                        <div class="color-option" style="background: #00ffff" data-color="#00ffff" onclick="selectColor('#00ffff', this)"></div>
+                        <div class="color-option" style="background: #000000" data-color="#000000" onclick="selectColor('#000000', this)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="browser.js"></script>
+    <script>
+        // Global state management
+        let currentSettings = {
+            type: 'circle',
+            size: 15,
+            color: '#1abc9c',
+            delay: 0.1,
+            thickness: 2,
+            cursor: 'default'
+        };
+
+        // Trail type functions
+        function setTrail(type) {
+            currentSettings.type = type;
+            CursorLab.setCursorTrail(type).startTrail();
+            updateSettingsDisplay();
+        }
+
+        // Interactive slider functions
+        function updateSize(value) {
+            currentSettings.size = value;
+            document.getElementById('sizeValue').textContent = value + 'px';
+            CursorLab.setSize(parseFloat(value));
+            updateSettingsDisplay();
+        }
+
+        function updateDelay(value) {
+            currentSettings.delay = value;
+            document.getElementById('delayValue').textContent = value;
+            CursorLab.trailDelay(parseFloat(value));
+            updateSettingsDisplay();
+        }
+
+        function updateThickness(value) {
+            currentSettings.thickness = value;
+            document.getElementById('thicknessValue').textContent = value + 'px';
+            CursorLab.setThickness(parseFloat(value));
+            updateSettingsDisplay();
+        }
+
+        // Color palette function
+        function selectColor(color, element) {
+            // Remove active class from all color options
+            document.querySelectorAll('.color-option').forEach(el => el.classList.remove('active'));
+            // Add active class to selected color
+            element.classList.add('active');
+            
+            currentSettings.color = color;
+            CursorLab.setColor(color);
+            updateSettingsDisplay();
+        }
+
+        // Update settings display
+        function updateSettingsDisplay() {
+            document.getElementById('currentType').textContent = currentSettings.type;
+            document.getElementById('currentSize').textContent = currentSettings.size + 'px';
+            document.getElementById('currentColor').textContent = currentSettings.color;
+            document.getElementById('currentDelay').textContent = currentSettings.delay;
+            document.getElementById('currentThickness').textContent = currentSettings.thickness + 'px';
+            document.getElementById('currentCursor').textContent = currentSettings.cursor;
+        }
+
+        // Legacy property change functions (for backward compatibility)
+        function changeSize(widthOrRadius, height) {
+            if (height) {
+                CursorLab.setSize(widthOrRadius, height);
+                currentSettings.size = widthOrRadius;
+            } else {
+                CursorLab.setSize(widthOrRadius);
+                currentSettings.size = widthOrRadius;
+            }
+            document.getElementById('sizeSlider').value = widthOrRadius;
+            document.getElementById('sizeValue').textContent = widthOrRadius + 'px';
+            updateSettingsDisplay();
+        }
+
+        function changeThickness(thickness) {
+            CursorLab.setThickness(thickness);
+            currentSettings.thickness = thickness;
+            document.getElementById('thicknessSlider').value = thickness;
+            document.getElementById('thicknessValue').textContent = thickness + 'px';
+            updateSettingsDisplay();
+        }
+
+        function changeColor(color) {
+            CursorLab.setColor(color);
+            currentSettings.color = color;
+            // Update active color in palette
+            document.querySelectorAll('.color-option').forEach(el => {
+                el.classList.remove('active');
+                if (el.dataset.color === color) {
+                    el.classList.add('active');
+                }
+            });
+            updateSettingsDisplay();
+        }
+
+        function changeDelay(delay) {
+            CursorLab.trailDelay(delay);
+            currentSettings.delay = delay;
+            document.getElementById('delaySlider').value = delay;
+            document.getElementById('delayValue').textContent = delay;
+            updateSettingsDisplay();
+        }
+
+        // Cursor functions
+        function setCursor(type, param1, param2) {
+            if (param1 && param2) {
+                CursorLab.setCustomCursor(type, param1, param2);
+                currentSettings.cursor = type + ' (' + param1 + ', ' + param2 + ')';
+            } else {
+                CursorLab.setCustomCursor(type);
+                currentSettings.cursor = type;
+            }
+            updateSettingsDisplay();
+        }
+
+        // Method chaining examples
+        function chainExample1() {
+            CursorLab.setCursorTrail('circle')
+                     .setColor('#ff0000')
+                     .setSize(15)
+                     .setThickness(3)
+                     .setCustomCursor('grab')
+                     .startTrail();
+        }
+
+        function chainExample2() {
+            CursorLab.setCursorTrail('star')
+                     .setColor('#0066ff')
+                     .trailDelay(0.05)
+                     .setSize(25)
+                     .startTrail();
+        }
+
+        function chainExample3() {
+            CursorLab.setCursorTrail('square')
+                     .setColor('#9b59b6')
+                     .setThickness(5)
+                     .setSize(22)
+                     .trailDelay(0.15)
+                     .startTrail();
+        }
+
+        function chainExample4() {
+            CursorLab.setCursorTrail('triangle')
+                     .setColor('#e74c3c')
+                     .setSize(30, 25)
+                     .trailDelay(0.08)
+                     .setCustomCursor('crosshair', 3, 20)
+                     .startTrail();
+        }
+
+        // Advanced styling examples
+        function customStyle1() {
+            CursorLab.setCursorTrail('circle')
+                     .setColor('#00ffff')
+                     .setSize(20)
+                     .startTrail();
+            
+            CursorLab.setCustomStyle(`
+                .cursorlab-trail {
+                    filter: blur(1px) !important;
+                    opacity: 0.8 !important;
+                }
+            `);
+        }
+
+        function customStyle2() {
+            CursorLab.setCursorTrail('star')
+                     .setColor('#ff00ff')
+                     .setSize(25)
+                     .startTrail();
+            
+            CursorLab.setCustomStyle(`
+                .cursorlab-trail {
+                    box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 60px #ff00ff !important;
+                    animation: rainbow 2s infinite !important;
+                }
+                @keyframes rainbow {
+                    0% { filter: hue-rotate(0deg); }
+                    100% { filter: hue-rotate(360deg); }
+                }
+            `);
+        }
+
+        function customStyle3() {
+            CursorLab.setCursorTrail('square')
+                     .setColor('#f39c12')
+                     .setSize(20)
+                     .startTrail();
+            
+            CursorLab.setCustomStyle(`
+                .cursorlab-trail {
+                    animation: spin 1s linear infinite !important;
+                }
+                @keyframes spin {
+                    from { transform: translate(-50%, -50%) rotate(0deg); }
+                    to { transform: translate(-50%, -50%) rotate(360deg); }
+                }
+            `);
+        }
+
+
+
+        // Initialize with a default trail and setup
+        window.addEventListener('DOMContentLoaded', function() {
+            CursorLab.setCursorTrail('circle')
+                     .setColor('#1abc9c')
+                     .setSize(15)
+                     .setThickness(2)
+                     .trailDelay(0.1)
+                     .startTrail();
+            
+            updateSettingsDisplay();
+        });
+    </script>
+</body>
+</html> 

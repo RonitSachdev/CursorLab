@@ -1,0 +1,47 @@
+{
+  "name": "cursorlab",
+  "version": "1.0.0",
+  "description": "A powerful, modular JavaScript library for creating custom mouse cursors and trail effects",
+  "main": "index.js",
+  "browser": "browser.js",
+  "bin": {
+    "cursorlab": "./cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cursor",
+    "mouse",
+    "pointer",
+    "trail",
+    "effects",
+    "animation",
+    "frontend",
+    "ui",
+    "css",
+    "javascript",
+    "modular",
+    "custom",
+    "interactive"
+  ],
+  "author": "cursorlab",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RonitSachdev/cursorlab.git"
+  },
+  "files": [
+    "index.js",
+    "browser.js",
+    "cli.js",
+    "src/",
+    "demo.html",
+    "README.md",
+    "LICENSE"
+  ],
+  "bugs": {
+    "url": "https://github.com/RonitSachdev/cursorlab/issues"
+  },
+  "homepage": "https://github.com/RonitSachdev/cursorlab#readme"
+}
