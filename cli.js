@@ -83,10 +83,12 @@ function showHelp() {
    • Use trailDelay(0.1) or higher for better performance
    • Call destroy() when removing the trail to prevent memory leaks
    • Image cursors work best with PNG files under 32x32 pixels
+   • Try 'cursorlab demo' to see interactive examples!
 
 📖 DOCUMENTATION:
    GitHub: https://github.com/RonitSachdev/cursorlab
    npm: https://www.npmjs.com/package/cursorlab
+   Interactive Demo: cursorlab demo
 `);
 }
 
@@ -95,16 +97,58 @@ function showVersion() {
   console.log(`CursorLab v${packageJson.version}`);
 }
 
+function openDemo() {
+  const path = require('path');
+  const { exec } = require('child_process');
+  
+  // Find the demo.html file in the package directory
+  const demoPath = path.join(__dirname, 'demo.html');
+  const fs = require('fs');
+  
+  if (!fs.existsSync(demoPath)) {
+    console.log('❌ Demo file not found. Make sure CursorLab is properly installed.');
+    process.exit(1);
+  }
+  
+  // Convert to file:// URL for cross-platform compatibility
+  const demoUrl = `file://${demoPath.replace(/\\/g, '/')}`;
+  
+  console.log('🚀 Opening CursorLab interactive demo...');
+  console.log(`📍 Location: ${demoPath}`);
+  
+  // Cross-platform command to open in default browser
+  let openCommand;
+  if (process.platform === 'win32') {
+    openCommand = `start "" "${demoUrl}"`;
+  } else if (process.platform === 'darwin') {
+    openCommand = `open "${demoUrl}"`;
+  } else {
+    openCommand = `xdg-open "${demoUrl}"`;
+  }
+  
+  exec(openCommand, (error) => {
+    if (error) {
+      console.log('❌ Could not open demo automatically.');
+      console.log(`🌐 Please open this file manually in your browser:`);
+      console.log(`   ${demoPath}`);
+    } else {
+      console.log('✅ Demo opened in your default browser!');
+    }
+  });
+}
+
 function showUsage() {
   console.log(`
 Usage: cursorlab <command>
 
 Commands:
   help     Show detailed help and examples
+  demo     Open interactive demo in browser
   version  Show version number
   
 Examples:
   cursorlab help
+  cursorlab demo
   cursorlab version
 `);
 }
@@ -115,6 +159,11 @@ switch (command) {
   case '--help':
   case '-h':
     showHelp();
+    break;
+  case 'demo':
+  case '--demo':
+  case '-d':
+    openDemo();
     break;
   case 'version':
   case '--version':

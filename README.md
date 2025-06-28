@@ -1,8 +1,16 @@
 # CursorLab 🎯
 
+<div align="center">
+
+![CursorLab Demo](demo.gif)
+
+*Interactive cursor trails with real-time parameter controls*
+
+</div>
+
 A powerful, lightweight, and modular JavaScript library for creating custom mouse cursors and trail effects in web applications. Transform your user experience with smooth-following trails and customizable cursor styles.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Size](https://img.shields.io/badge/size-~8KB-orange.svg)
 
@@ -25,6 +33,9 @@ A powerful, lightweight, and modular JavaScript library for creating custom mous
 
 ```bash
 npm install cursorlab
+
+# Try the interactive demo!
+cursorlab demo
 ```
 
 ### Basic Usage
@@ -345,6 +356,9 @@ npm install cursorlab
 # Get comprehensive help
 cursorlab help
 
+# Open interactive demo in browser
+cursorlab demo
+
 # Check version
 cursorlab version
 ```
@@ -354,6 +368,7 @@ The CLI provides:
 - Method chaining examples
 - Browser and Node.js examples
 - Performance tips and best practices
+- **Interactive demo with live controls** - `cursorlab demo`
 
 Perfect for quick reference while coding!
 
