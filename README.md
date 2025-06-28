@@ -1,10 +1,8 @@
 # CursorLab 🎯
 
 <div align="center">
-![cursorlab_sample](https://github.com/user-attachments/assets/c3853d8b-e9ba-434f-90a1-e2e0dfd770a1)
-
-![CursorLab Demo](demo.gif)
-
+![cursorlab_sample]()
+<img src="https://github.com/user-attachments/assets/c3853d8b-e9ba-434f-90a1-e2e0dfd770a1"/>
 *Interactive cursor trails with real-time parameter controls*
 
 </div>
