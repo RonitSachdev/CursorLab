@@ -389,5 +389,3 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 - [Demo](demo.html)
 
 ---
-
-**Made with ❤️ for better web experiences** 
