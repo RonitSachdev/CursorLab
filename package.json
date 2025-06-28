@@ -1,6 +1,6 @@
 {
   "name": "cursorlab",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A powerful, modular JavaScript library for creating custom mouse cursors and trail effects",
   "main": "index.js",
   "browser": "browser.js",
